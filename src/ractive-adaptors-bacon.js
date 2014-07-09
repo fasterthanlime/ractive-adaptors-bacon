@@ -74,14 +74,18 @@
 		this.value = observable;
 		this.keypath = keypath;
 
-		this.dispose = observable.subscribe( function ( observable ) {
+		this.dispose = observable.subscribe( function ( event ) {
+			if (!event.hasValue()) {
+				return;
+			}
+			
 			var value;
 
 			if ( self.updating ) {
 				return;
 			}
 
-			value = observable.value();
+			value = event.value();
 
 			self._value = value;
 
