@@ -104,16 +104,19 @@
 		},
 		reset: function ( value ) {
 			if ( this.updating ) {
-				return;
+				// do not teardown, we're just synchronizing with upstream.
+				return true;
 			}
 
 			if ( value instanceof Bacon.Observable ) {
+				// getting replaced by another observable.
 				return false;
 			}
 
-			this.updating = true;
-			// TODO how do you set the value of a Bacon.Observable?!
-			this.updating = false;
+			// two-way binding cannot work with Bacon - we have no
+			// access to the original stream. Doesn't mean we want to
+			// be torn down either, though.
+			return true;
 		}
 	};
 
